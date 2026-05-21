@@ -1,8 +1,8 @@
 name: Run Tender Scraper
 on:
   schedule:
-    - cron: '0 8 * * *' # يعمل يومياً الساعة 8 صباحاً
-  workflow_dispatch: # يتيح لك تشغيله يدوياً الآن للتجربة
+    - cron: '0 8 * * *'
+  workflow_dispatch:
 
 jobs:
   scrape:
@@ -13,6 +13,7 @@ jobs:
         with: { node-version: '20' }
       - run: npm install
       - run: npx playwright install chromium
+      - run: npx playwright install-deps # هذا السطر هو الحل للمشكلة!
       - run: node scraper.js
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
