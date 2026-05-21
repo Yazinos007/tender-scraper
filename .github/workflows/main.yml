@@ -6,14 +6,15 @@ on:
 
 jobs:
   scrape:
+    # نستخدم صورة جاهزة من Playwright تحتوي على كل ما يحتاجه المتصفح
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.43.0-jammy
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with: { node-version: '20' }
       - run: npm install
-      - run: npx playwright install chromium
-      - run: npx playwright install-deps # هذا السطر هو الحل للمشكلة!
       - run: node scraper.js
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
