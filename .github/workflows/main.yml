@@ -6,12 +6,14 @@ on:
 
 jobs:
   scrape:
-    # نستخدم صورة جاهزة من Playwright تحتوي على كل ما يحتاجه المتصفح
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.43.0-jammy
+      options: --user root # إضافة هذا السطر يحل 90% من مشاكل الصلاحيات
     steps:
       - uses: actions/checkout@v3
+      - name: Fix permissions
+        run: chown -R root:root . # التأكد من أن الملفات مملوكة للـ root
       - uses: actions/setup-node@v3
         with: { node-version: '20' }
       - run: npm install
