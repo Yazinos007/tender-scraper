@@ -1,4 +1,4 @@
-name: Run Tender Scraper
+name: Find and Run Scraper
 on:
   schedule:
     - cron: '0 8 * * *'
@@ -18,8 +18,8 @@ jobs:
       - name: List files
         run: ls -R
         
-      # تشغيل السكربت (إذا كان السكربت في مجلد فرعي، سنغير المسار بناءً على ما سيظهر في الـ Logs)
-      - run: node scraper.js 
+      run: |
+          find . -name "scraper.js" -exec node {} \;
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
