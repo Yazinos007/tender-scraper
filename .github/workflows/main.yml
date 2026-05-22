@@ -1,9 +1,8 @@
 name: Run Tender Scraper
-
 on:
   schedule:
-    - cron: '0 8 * * *' # يعمل يومياً الساعة 8 صباحاً
-  workflow_dispatch: # يتيح لك التشغيل اليدوي
+    - cron: '0 8 * * *'
+  workflow_dispatch:
 
 jobs:
   scrape:
@@ -11,11 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-        with:
-          node-version: '20'
+        with: { node-version: '20' }
       - run: npm install
+      # تنصيب المتصفح والمكتبات اللازمة للعرض الافتراضي
       - run: npx playwright install --with-deps chromium
-      - run: node scraper.js
+      # استخدام xvfb-run ليعمل المتصفح كأنه يرى شاشة
+      - run: xvfb-run npx node scraper.js
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
