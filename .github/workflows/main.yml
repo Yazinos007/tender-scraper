@@ -1,4 +1,4 @@
-name: Find and Run Scraper
+name: Run Tender Scraper
 on:
   schedule:
     - cron: '0 8 * * *'
@@ -10,16 +10,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-        with: { node-version: '20' }
+        with:
+          node-version: '20'
       - run: npm install
       - run: npx playwright install --with-deps chromium
       
-      # هذه الخطوة ستعرض لنا كل الملفات في الـ Log لنرى أين اختبأ السكربت
       - name: List files
         run: ls -R
         
-      run: |
-          find . -name "scraper.js" -exec node {} \;
+      - name: Find and Run Scraper
+        run: find . -name "scraper.js" -exec node {} \;
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
