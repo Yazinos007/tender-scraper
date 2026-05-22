@@ -10,11 +10,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-        with:
-          node-version: '20'
+        with: { node-version: '20' }
       - run: npm install
       - run: npx playwright install --with-deps chromium
-      - run: node scraper.js
+      
+      # هذه الخطوة ستعرض لنا كل الملفات في الـ Log لنرى أين اختبأ السكربت
+      - name: List files
+        run: ls -R
+        
+      # تشغيل السكربت (إذا كان السكربت في مجلد فرعي، سنغير المسار بناءً على ما سيظهر في الـ Logs)
+      - run: node scraper.js 
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
