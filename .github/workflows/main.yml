@@ -2,7 +2,9 @@ name: Run Tender Scraper
 on:
   schedule:
     - cron: '0 8 * * *'
-  workflow_dispatch:
+  defaults: 
+      run:
+        working-directory: ./  # لنبدأ من المجلد الرئيسي مباشرة
 
 jobs:
   scrape:
