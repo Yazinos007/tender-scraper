@@ -7,15 +7,17 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./souqbtp-dashboard # هذا هو السطر السحري
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with: { node-version: '20' }
       - run: npm install
-      # تنصيب المتصفح والمكتبات اللازمة للعرض الافتراضي
       - run: npx playwright install --with-deps chromium
-      # استخدام xvfb-run ليعمل المتصفح كأنه يرى شاشة
-      - run: xvfb-run npx node scraper.js
+      # ملاحظة: يجب أن نغير مسار تشغيل السكربت لأنه الآن أصبح داخل المجلد
+      - run: node ../scraper.js 
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
