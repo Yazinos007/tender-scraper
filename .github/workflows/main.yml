@@ -15,16 +15,9 @@ jobs:
       - run: npm install
       - run: npx playwright install --with-deps chromium
       
-      - name: Find and Run Scraper
-        id: scraper
-        run: |
-          # تشغيل السكربت وتخزين المخرج في متغير
-          OUTPUT=$(find . -name "scraper.js" -exec node {} \;)
-          echo "$OUTPUT"
-          # استخراج العدد إذا وجد كلمة SUCCESS_COUNT
-          COUNT=$(echo "$OUTPUT" | grep "SUCCESS_COUNT" | cut -d':' -f2)
-          # حفظ المتغير لاستخدامه في الخطوات القادمة
-          echo "COUNT=${COUNT:-0}" >> $GITHUB_ENV
+      # تشغيل مباشر للسكربت لرؤية الأخطاء فوراً في الـ Logs
+      - name: Run Scraper
+        run: node scraper.js
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
@@ -32,7 +25,6 @@ jobs:
       - name: Send Telegram Notification
         if: always()
         run: |
-          TEXT="تقرير الروبوت: تم العثور على ${COUNT} صفقات جديدة اليوم."
           curl -s -X POST https://api.telegram.org/bot${{ secrets.BOT_TOKEN }}/sendMessage \
           -d chat_id=${{ secrets.CHAT_ID }} \
-          -d text="$TEXT"
+          -d text="تم تشغيل الروبوت، يرجى مراجعة الـ Logs في GitHub للتفاصيل."
