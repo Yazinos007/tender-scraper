@@ -16,8 +16,8 @@ jobs:
       - run: npx playwright install --with-deps chromium
       
       # تشغيل مباشر للسكربت لرؤية الأخطاء فوراً في الـ Logs
-      - name: Run Scraper
-        run: node scraper.js
+      - name: Run Scraper with Absolute Path
+        run: node "$GITHUB_WORKSPACE/scraper.js"
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
