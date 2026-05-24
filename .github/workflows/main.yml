@@ -15,8 +15,15 @@ jobs:
       - run: npm install
       - run: npx playwright install --with-deps chromium
       
-      - name: Run Scraper in Subdirectory
-        run: node souqbtp-dashboard/scraper.js
+      - name: Locate and Execute
+        run: |
+          echo "--- مسار العمل الحالي هو: ---"
+          pwd
+          echo "--- محتويات المجلد الحالي: ---"
+          ls -R
+          echo "--- جاري البحث عن السكربت وتشغيله: ---"
+          # هذا السطر يبحث عن الملف ويشغله فوراً بدون الحاجة لكتابة المسار يدوياً
+          find . -name "scraper.js" -exec node {} \;
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
