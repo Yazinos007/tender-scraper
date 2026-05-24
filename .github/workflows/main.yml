@@ -15,16 +15,10 @@ jobs:
       - run: npm install
       - run: npx playwright install --with-deps chromium
       
-      # تشغيل مباشر للسكربت لرؤية الأخطاء فوراً في الـ Logs
-      - name: Debug and Find File
+      - name: Inspect Repository Structure
         run: |
-          echo "جاري البحث عن ملف scraper.js في كل مكان..."
-          find . -name "scraper.js"
-          
-          # الآن سنشغل الملف الذي سيجده الـ find
-          FILE_PATH=$(find . -name "scraper.js" | head -n 1)
-          echo "تم العثور على الملف في: $FILE_PATH"
-          node "$FILE_PATH"
+          echo "جاري سرد كافة الملفات في المستودع:"
+          ls -R
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
