@@ -15,10 +15,8 @@ jobs:
       - run: npm install
       - run: npx playwright install --with-deps chromium
       
-      - name: Inspect Repository Structure
-        run: |
-          echo "جاري سرد كافة الملفات في المستودع:"
-          ls -R
+      - name: Run Scraper in Subdirectory
+        run: node souqbtp-dashboard/scraper.js
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
